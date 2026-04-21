@@ -157,11 +157,11 @@ textarea{resize:vertical;min-height:54px;}
     <input type="number" id="s-fast" placeholder="البلاغات السريعة" min="0">
   </div>
   <div id="s-justify-wrap" class="warn-box">
-    &#x26A0;&#xFE0F; المؤشر تجاوز 8 دقائق — يرجى إدخال السبب
+    &#x26A0;&#xFE0F; المؤشر تجاوز 8 دقائق — يرجى إدخال المبرر
   </div>
   <div class="ff" id="s-justify-field" style="display:none;margin-top:6px">
-    <label>سبب ارتفاع المؤشر *</label>
-    <textarea id="s-justify" placeholder="أدخل سبب ارتفاع المؤشر..."></textarea>
+    <label>مبرر ارتفاع المؤشر *</label>
+    <textarea id="s-justify" placeholder="أدخل مبرر ارتفاع المؤشر..."></textarea>
     <span class="err-msg" id="s-justify-err">هذا الحقل إلزامي عند ارتفاع المؤشر</span>
   </div>
   <div class="ff"><label>ملاحظات الموشر</label><textarea id="s-in" placeholder="ملاحظات..."></textarea></div>
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
       jwrap.classList.remove('show');
       jfield.style.display = 'none';
     } else {
-      badge.innerHTML = '<span class="indicator-badge badge-warn">⚠️ المؤشر مرتفع - السبب</span>';
+      badge.innerHTML = '<span class="indicator-badge badge-warn">⚠️ المؤشر مرتفع — يلزم مبرر</span>';
       jwrap.classList.add('show');
       jfield.style.display = 'block';
     }
@@ -690,23 +690,23 @@ document.addEventListener('DOMContentLoaded', function () {
     m += '📅 التاريخ: ' + gv('s-date') + '\n';
     m += '🕐 الفترة: ' + (per ? per.value : '—') + '\n';
     m += '\n📊 *الموشر*\n';
-    m += ' متوسط الاستجابة: *' + gv('s-ir') + ' دقيقة*\n';
-    m += ' عدد البلاغات: *' + gv('s-total') + '*\n';
-    m += ' البلاغات السريعة: *' + gv('s-fast') + '*\n';
+    m += '⏱ متوسط الاستجابة: *' + gv('s-ir') + ' دقيقة*\n';
+    m += '📞 عدد البلاغات: *' + gv('s-total') + '*\n';
+    m += '⚡ البلاغات السريعة: *' + gv('s-fast') + '*\n';
     if (!isNaN(irVal) && irVal > 8) {
-      m += ' مبرر ارتفاع المؤشر: ' + gv('s-justify') + '\n';
+      m += '📝 مبرر ارتفاع المؤشر: ' + gv('s-justify') + '\n';
     }
     var iN = gv('s-in');
-    if (iN) m += ' ملاحظات الموشر: ' + iN + '\n';
+    if (iN) m += '📌 ملاحظات الموشر: ' + iN + '\n';
 
-    m += '\n *المركبات*\n';
-    m += ' عاملة: *' + (gv('s-vw') || '—') + '*\n';
-    m += ' احتياط: *' + (gv('s-vr') || '—') + '*\n';
-    m += ' متعطلة: *' + (gv('s-vb') || '—') + '*\n';
+    m += '\n🚗 *المركبات*\n';
+    m += '✅ عاملة: *' + (gv('s-vw') || '—') + '*\n';
+    m += '🔄 احتياط: *' + (gv('s-vr') || '—') + '*\n';
+    m += '🔧 متعطلة: *' + (gv('s-vb') || '—') + '*\n';
     var vN = gv('s-vn');
     if (vN) m += '⚠️ ملاحظات: ' + vN + '\n';
 
-    m += '\n *البلاغات*\n';
+    m += '\n📋 *البلاغات*\n';
     Object.keys(sSecs).forEach(function (sid) {
       var s = sSecs[sid];
       m += '\n▪️ *القطاع: ' + s.name + '*\n';
@@ -714,12 +714,12 @@ document.addEventListener('DOMContentLoaded', function () {
         m += '_لا توجد بلاغات_\n';
       } else {
         s.incs.forEach(function (inc) {
-          m += ' استجابة ' + inc.n + ': ' + (inc.note || '—') + '\n';
+          m += '🔹 استجابة ' + inc.n + ': ' + (inc.note || '—') + '\n';
         });
       }
       var se = $('sup' + sid), ce = $('can' + sid);
-      if (se && se.value.trim()) m += ' داعمة: ' + se.value.trim() + '\n';
-      if (ce && ce.value.trim()) m += ' ملغية: ' + ce.value.trim() + '\n';
+      if (se && se.value.trim()) m += '🟢 داعمة: ' + se.value.trim() + '\n';
+      if (ce && ce.value.trim()) m += '🔴 ملغية: ' + ce.value.trim() + '\n';
     });
 
     var abs = [].slice.call(document.querySelectorAll('#s-abs input'))
@@ -727,17 +727,17 @@ document.addEventListener('DOMContentLoaded', function () {
     var lat = [].slice.call(document.querySelectorAll('#s-lat input'))
       .map(function (x) { return x.value.trim(); }).filter(Boolean);
     if (abs.length || lat.length) {
-      m += '\n *الغياب والمتأخرين*\n';
-      if (abs.length) m += ' غياب: *' + abs.join('، ') + '*\n';
-      if (lat.length) m += ' متأخرون: *' + lat.join('، ') + '*\n';
+      m += '\n👤 *الغياب والمتأخرين*\n';
+      if (abs.length) m += '🚫 غياب: *' + abs.join('، ') + '*\n';
+      if (lat.length) m += '⏱ متأخرون: *' + lat.join('، ') + '*\n';
     }
 
     var gn = gv('s-gn');
-    if (gn) m += '\n *ملاحظات عامة*\n' + gn + '\n';
+    if (gn) m += '\n📝 *ملاحظات عامة*\n' + gn + '\n';
 
-    m += '\n *الطاقم*\n';
-    m += ' كبير المسعفين: *' + (gv('s-ch') || '—') + '*\n';
-    m += ' المساعد: *' + (gv('s-as') || '—') + '*';
+    m += '\n👥 *الطاقم*\n';
+    m += '🎖 كبير المسعفين: *' + (gv('s-ch') || '—') + '*\n';
+    m += '🤝 المساعد: *' + (gv('s-as') || '—') + '*';
 
     sendWA(m);
   });
@@ -750,8 +750,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var ph  = $('m-ph');
     var m   = '';
     m += '📊 *مؤشر المناوبة — قطاع الوسط*\n';
-    m += ' ' + (gv('m-d') || '—') + '    ' + (per ? per.value : '—') + '\n';
-    m += ' متوسط وقت الاستجابة: *' + (gv('m-r') || '—') + '*\n';
+    m += '*التاريخ:* ' + (gv('m-d') || '—') + '\n';
+    m += '*المناوبة:* ' + (per ? per.value : '—') + '\n';
+    m += '*متوسط وقت الاستجابة:* *' + (gv('m-r') || '—') + '*\n';
     if (ph && ph.value) m += '\n' + ph.value;
     return m;
   }
@@ -775,14 +776,14 @@ document.addEventListener('DOMContentLoaded', function () {
   bindClick('btn-o-send', function () {
     var m = '';
     m += '🛢 *نموذج تغيير الزيت*\n';
-    m += ' التاريخ: *' + (gv('o-d') || '—') + '*\n';
-    m += '\n *بيانات المركبة*\n';
-    m += ' نداء الفرقة: *' + (gv('o-call')  || '—') + '*\n';
-    m += ' رقم اللوحة: *'  + (gv('o-plate') || '—') + '*\n';
-    m += ' العداد الحالي: *' + (gv('o-km')  || '—') + ' كم*\n';
-    m += ' الموعد القادم: *' + (gv('o-next') || '—') + ' كم*\n';
+    m += '📅 التاريخ: *' + (gv('o-d') || '—') + '*\n';
+    m += '\n🚑 *بيانات المركبة*\n';
+    m += '📻 نداء الفرقة: *' + (gv('o-call')  || '—') + '*\n';
+    m += '🔢 رقم اللوحة: *'  + (gv('o-plate') || '—') + '*\n';
+    m += '📏 العداد الحالي: *' + (gv('o-km')  || '—') + ' كم*\n';
+    m += '🗓 الموعد القادم: *' + (gv('o-next') || '—') + ' كم*\n';
     var n = gv('o-n');
-    if (n) m += '\n *ملاحظات*\n' + n;
+    if (n) m += '\n📝 *ملاحظات*\n' + n;
     sendWA(m);
   });
 
@@ -850,19 +851,19 @@ document.addEventListener('DOMContentLoaded', function () {
     var sE = { 'بسيط': '🟡', 'متوسط': '🟠', 'خطير': '🔴' };
     var sevVal = gv('d-severity') || '—';
     var m = '';
-    m += ' *نموذج صيانة جهاز*\n';
-    m += ' التاريخ: *' + (gv('d-d') || '—') + '*\n';
-    m += '\n *بيانات الجهاز*\n';
-    m += ' اسم الجهاز: *'   + (gv('d-name')   || '—') + '*\n';
-    m += ' السيريال: *'      + (gv('d-serial') || '—') + '*\n';
-    m += ' العطل: _'         + (gv('d-fault')  || '—') + '_\n';
+    m += '🔧 *نموذج صيانة جهاز*\n';
+    m += '📅 التاريخ: *' + (gv('d-d') || '—') + '*\n';
+    m += '\n🔧 *بيانات الجهاز*\n';
+    m += '📛 اسم الجهاز: *'   + (gv('d-name')   || '—') + '*\n';
+    m += '🔖 السيريال: *'      + (gv('d-serial') || '—') + '*\n';
+    m += '⚠️ العطل: _'         + (gv('d-fault')  || '—') + '_\n';
     m += (sE[sevVal] || '⚪') + ' الشدة: *' + sevVal + '*\n';
-    m += ' حالة الصيانة: *'  + statusVal + '*\n';
+    m += '🔩 حالة الصيانة: *'  + statusVal + '*\n';
     if (statusVal === 'أخرى') {
-      m += ' تفاصيل: ' + gv('d-other') + '\n';
+      m += '📋 تفاصيل: ' + gv('d-other') + '\n';
     }
     var n = gv('d-n');
-    if (n) m += '\n *ملاحظات*\n' + n;
+    if (n) m += '\n📝 *ملاحظات*\n' + n;
     sendWA(m);
   });
 
@@ -910,22 +911,22 @@ document.addEventListener('DOMContentLoaded', function () {
     var pri    = gv('v-pri')      || 'عادية';
     var sevVal = gv('v-severity') || '—';
     var m = '';
-    m += ' *نموذج صيانة مركبة*\n';
-    m += ' التاريخ: *' + (gv('v-d') || '—') + '*\n';
-    m += '\n *بيانات المركبة*\n';
-    m += ' رقم المركبة: *' + (gv('v-num') || '—') + '*\n';
-    m += ' النوع: *'         + (gv('v-typ') || '—') + '*\n';
-    m += ' العداد: *'         + (gv('v-km')  || '—') + ' كم*\n';
+    m += '🚑 *نموذج صيانة مركبة*\n';
+    m += '📅 التاريخ: *' + (gv('v-d') || '—') + '*\n';
+    m += '\n🚗 *بيانات المركبة*\n';
+    m += '🔢 رقم المركبة: *' + (gv('v-num') || '—') + '*\n';
+    m += '🏷 النوع: *'         + (gv('v-typ') || '—') + '*\n';
+    m += '📏 العداد: *'         + (gv('v-km')  || '—') + ' كم*\n';
     m += (pE[pri] || '⚪') + ' الأولوية: *' + pri + '*\n';
-    m += ' حالة الصيانة: *' + statusVal + '*\n';
+    m += '🔩 حالة الصيانة: *' + statusVal + '*\n';
     if (statusVal === 'أخرى') {
-      m += ' تفاصيل: ' + gv('v-other') + '\n';
+      m += '📋 تفاصيل: ' + gv('v-other') + '\n';
     }
-    m += '\n *العطل*\n';
-    m += ' وصف العطل: _' + (gv('v-fault') || '—') + '_\n';
+    m += '\n⚠️ *العطل*\n';
+    m += '📝 وصف العطل: _' + (gv('v-fault') || '—') + '_\n';
     m += (sE[sevVal] || '⚪') + ' الشدة: *' + sevVal + '*\n';
     var n = gv('v-n');
-    if (n) m += '\n *ملاحظات*\n' + n;
+    if (n) m += '\n📝 *ملاحظات*\n' + n;
     sendWA(m);
   });
 
@@ -968,17 +969,17 @@ document.addEventListener('DOMContentLoaded', function () {
     var rosc  = gv('r-ro') || 'نعم';
     var lucas = gv('r-lu') || 'نعم';
     var m     = '';
-    m += '❤️ *ROSC*\n';
-    m += ' توقيت البلاغ: *' + (gv('r-ti') || '—') + '*\n';
-    m += ' نوع البلاغ: *' + (gv('r-ty') || '—') + '*\n';
-    m += ' موقع البلاغ: *' + (gv('r-lo') || '—') + '*\n';
-    m += ' زمن الاستجابة: *' + (gv('r-re') || '—') + '*\n';
-    m += '\n *الوحدات المستجيبة*\n';
+    m += '❤️ *نموذج ROSC*\n';
+    m += '⏰ توقيت البلاغ: *' + (gv('r-ti') || '—') + '*\n';
+    m += '🏷 نوع البلاغ: *' + (gv('r-ty') || '—') + '*\n';
+    m += '📍 موقع البلاغ: *' + (gv('r-lo') || '—') + '*\n';
+    m += '⚡ زمن الاستجابة: *' + (gv('r-re') || '—') + '*\n';
+    m += '\n🚑 *الوحدات المستجيبة*\n';
     var un = gv('r-un');
     if (un) un.split('\n').forEach(function (x) { if (x.trim()) m += '• ' + x.trim() + '\n'; });
-    m += '\n *نتائج التدخل*\n';
-    m += ' هل تحقق ROSC؟ *' + rosc + (rosc === 'نعم' ? ' 👏' : '') + '*\n';
-    m += ' هل تم استخدام جهاز لوكس؟ *' + lucas + (lucas === 'نعم' ? ' ✅' : '') + '*\n';
+    m += '\n✅ *نتائج التدخل*\n';
+    m += '💓 هل تحقق ROSC؟ *' + rosc + (rosc === 'نعم' ? ' 👏' : '') + '*\n';
+    m += '🤖 هل تم استخدام جهاز لوكس؟ *' + lucas + (lucas === 'نعم' ? ' ✅' : '') + '*\n';
     m += '\nعمل عظيم يجسد الإخلاص والاحترافية في العمل 🌟\n';
     m += 'بكل فخر واعتزاز نتقدم بجزيل الشكر والعرفان لجهود الزملاء\n';
     m += 'الذين كان لهم — بعد توفيق الله — الفضل في نجاح عملية الإنعاش القلبي الرئوي\n\n';
@@ -986,8 +987,8 @@ document.addEventListener('DOMContentLoaded', function () {
       .map(function (x) { return x.value.trim(); }).filter(Boolean);
     names.forEach(function (n, i) { m += arN[i] + '- *' + n + '*\n'; });
     if (names.length) m += '\n';
-    m += ' تحكم عملياتي: *' + (gv('r-op') || '—') + '*\n';
-    m += ' تنسيق استجابة: *' + (gv('r-co') || '—') + '*\n';
+    m += '🎯 تحكم عملياتي: *' + (gv('r-op') || '—') + '*\n';
+    m += '🔗 تنسيق استجابة: *' + (gv('r-co') || '—') + '*\n';
     m += '\nجزاكم الله خيرًا وكتب أجركم وجعل ما قدمتموه في موازين حسناتكم 🌹';
     sendWA(m);
   });
